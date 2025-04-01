@@ -1,5 +1,5 @@
 import ProductPageClient from "./ProductPageClient";
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
+export default function ProductPage({ params }: { params: { id: string } }) {
   return <ProductPageClient productId={params.id} />;
 }
