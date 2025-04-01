@@ -1,5 +1,6 @@
 import ProductPageClient from "./ProductPageClient";
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  return <ProductPageClient productId={params.id} />;
-}
+export default async function ProductPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = await props.params;
+
+  return <ProductPageClient productId={id} />;
