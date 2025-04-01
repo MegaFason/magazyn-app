@@ -4,19 +4,22 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 
-const supabase = createClient(
+// Typ produktu
+type Product = {
+  id: string;
+  name: string;
+  brand?: string;
+};
+
+const supabase = createClient<{
+  products: Product;
+}>(
   "https://rybjxjexydgviguafwwp.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5Ymp4amV4eWRndmlndWFmd3dwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM1MTM1MDMsImV4cCI6MjA1OTA4OTUwM30.ScwCcZ8l9TYfaPsxBe7T71E6PJTr5v-D0mK8IxT7fb8"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 );
 
 export default function ProductsPage() {
-    type Product = {
-        id: string;
-        name: string;
-        brand?: string;
-      };
-      
-      const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
@@ -46,17 +49,24 @@ export default function ProductsPage() {
 
       <ul className="space-y-2">
         {filtered.map((product) => (
-          <li key={product.id} className="border rounded p-3 hover:bg-gray-100">
+          <li
+            key={product.id}
+            className="border rounded p-3 hover:bg-gray-100 transition"
+          >
             <Link href={`/product/${product.id}`}>
               <div className="font-semibold">{product.name}</div>
-              <div className="text-sm text-gray-600">{product.brand || "Brak marki"}</div>
+              <div className="text-sm text-gray-600">
+                {product.brand || "Brak marki"}
+              </div>
             </Link>
           </li>
         ))}
       </ul>
 
       {filtered.length === 0 && (
-        <p className="text-sm text-gray-500">Brak wyników dla podanej frazy.</p>
+        <p className="text-sm text-gray-500">
+          Brak wyników dla podanej frazy.
+        </p>
       )}
     </div>
   );
