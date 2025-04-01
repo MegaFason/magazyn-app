@@ -11,11 +11,9 @@ type Product = {
   brand?: string;
 };
 
-const supabase = createClient<{
-  products: Product;
-}>(
-  "https://rybjxjexydgviguafwwp.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
 export default function ProductsPage() {
