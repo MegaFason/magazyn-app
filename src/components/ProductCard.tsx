@@ -9,8 +9,22 @@ const supabase = createClient(
 );
 
 export default function ProductCard({ productId }: { productId: string }) {
-  const [product, setProduct] = useState<any>(null);
-  const [variants, setVariants] = useState<any[]>([]);
+  type Variant = {
+    id: string;
+    size: string;
+    stock_quantity: number;
+  };
+  
+  type Product = {
+    id: string;
+    name: string;
+    brand?: string;
+    invoice_name?: string;
+    purchase_date?: string;
+  };
+  
+  const [product, setProduct] = useState<Product | null>(null);
+  const [variants, setVariants] = useState<Variant[]>([]);
 
   console.log("🔍 Product ID:", productId); // debug #1
 
