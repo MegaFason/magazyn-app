@@ -10,7 +10,13 @@ const supabase = createClient(
 );
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<any[]>([]);
+    type Product = {
+        id: string;
+        name: string;
+        brand?: string;
+      };
+      
+      const [products, setProducts] = useState<Product[]>([]);
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
