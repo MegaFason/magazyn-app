@@ -3,14 +3,32 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
+// typ produktu
+type Product = {
+  id: string;
+  name: string;
+  brand?: string;
+  invoice_name?: string;
+  purchase_date?: string;
+};
+
+// typ wariantu
+type Variant = {
+  id: string;
+  product_id: string;
+  size: string;
+  stock_quantity: number;
+};
+
+// inicjalizacja klienta supabase
 const supabase = createClient(
   "https://rybjxjexydgviguafwwp.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ5Ymp4amV4eWRndmlndWFmd3dwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM1MTM1MDMsImV4cCI6MjA1OTA4OTUwM30.ScwCcZ8l9TYfaPsxBe7T71E6PJTr5v-D0mK8IxT7fb8"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 );
 
-export default function ProductCard({ productId }) {
-  const [product, setProduct] = useState(null);
-  const [variants, setVariants] = useState([]);
+export default function ProductCard({ productId }: { productId: string }) {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [variants, setVariants] = useState<Variant[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -26,7 +44,7 @@ export default function ProductCard({ productId }) {
         .eq("product_id", productId);
 
       setProduct(productData);
-      setVariants(variantData);
+      setVariants(variantData || []);
     }
 
     if (productId) fetchData();
@@ -41,27 +59,15 @@ export default function ProductCard({ productId }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="font-semibold text-sm">Marka</label>
-            <input
-              className="border p-2 rounded w-full"
-              value={product.brand || ""}
-              disabled
-            />
+            <input className="border p-2 rounded w-full" value={product.brand || ""} disabled />
           </div>
           <div>
             <label className="font-semibold text-sm">Nazwa faktury</label>
-            <input
-              className="border p-2 rounded w-full"
-              value={product.invoice_name || ""}
-              disabled
-            />
+            <input className="border p-2 rounded w-full" value={product.invoice_name || ""} disabled />
           </div>
           <div>
             <label className="font-semibold text-sm">Data zakupu</label>
-            <input
-              className="border p-2 rounded w-full"
-              value={product.purchase_date || ""}
-              disabled
-            />
+            <input className="border p-2 rounded w-full" value={product.purchase_date || ""} disabled />
           </div>
         </div>
 
@@ -70,27 +76,16 @@ export default function ProductCard({ productId }) {
           <div key={variant.id} className="grid grid-cols-2 gap-4 border-t pt-2">
             <div>
               <label className="font-semibold text-sm">Rozmiar</label>
-              <input
-                className="border p-2 rounded w-full"
-                value={variant.size}
-                disabled
-              />
+              <input className="border p-2 rounded w-full" value={variant.size} disabled />
             </div>
             <div>
               <label className="font-semibold text-sm">Ilość sztuk</label>
-              <input
-                className="border p-2 rounded w-full"
-                value={variant.stock_quantity}
-                disabled
-              />
+              <input className="border p-2 rounded w-full" value={variant.stock_quantity} disabled />
             </div>
           </div>
         ))}
 
-        <button
-          className="mt-4 px-4 py-2 bg-gray-300 rounded"
-          disabled
-        >
+        <button className="mt-4 px-4 py-2 bg-gray-300 rounded" disabled>
           Edytuj (wkrótce)
         </button>
       </div>
